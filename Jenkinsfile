@@ -2,17 +2,17 @@ import java.text.SimpleDateFormat
 
 currentBuild.displayName = new SimpleDateFormat("yy.MM.dd").format(new Date()) + "-" + env.BUILD_NUMBER
 
-env.REPO = "https://github.com/vfarcic/go-demo-3.git"
-env.IMAGE = "vfarcic/go-demo-3"
-env.ADDRESS = "go-demo-3-${env.BUILD_NUMBER}-${env.BRANCH_NAME}.acme.com"
-env.PROD_ADDRESS = "go-demo-3.acme.com"
-env.TAG = "${currentBuild.displayName}"
-env.TAG_BETA = "${env.TAG}-${env.BRANCH_NAME}"
+env.REPO = "https://github.com/e-lie/tp_fil_rouge_devops_application.git"
+// env.IMAGE = "vfarcic/go-demo-3"
+// env.ADDRESS = "go-demo-3-${env.BUILD_NUMBER}-${env.BRANCH_NAME}.acme.com"
+// env.PROD_ADDRESS = "go-demo-3.acme.com"
+// env.TAG = "${currentBuild.displayName}"
+// env.TAG_BETA = "${env.TAG}-${env.BRANCH_NAME}"
 
-def label = "jenkins-slave-${UUID.randomUUID().toString()}"
+// def label = "jenkins-slave-${UUID.randomUUID().toString()}"
 
 podTemplate(
-  label: label,
+//   label: label,
   namespace: "jenkins",
   serviceAccount: "jenkins",
   yaml: """
@@ -32,10 +32,10 @@ spec:
 ) {
   node(label) {
     stage("python-test") {
-      steps {
         container('python') {
+          git "${env.REPO}"
           sh "pip install -r requirements.txt"
           sh "python tests.py"
         }
-      }
     }
+  }
