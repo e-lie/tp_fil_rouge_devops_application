@@ -9,10 +9,10 @@ env.REPO = "https://github.com/e-lie/tp_fil_rouge_devops_application.git"
 // env.TAG = "${currentBuild.displayName}"
 // env.TAG_BETA = "${env.TAG}-${env.BRANCH_NAME}"
 
-// def label = "jenkins-slave-${UUID.randomUUID().toString()}"
+def nodelabel = "jenkins-slave-${UUID.randomUUID().toString()}"
 
 podTemplate(
-//   label: label,
+  label: nodelabel,
   namespace: "jenkins",
   serviceAccount: "jenkins",
   yaml: """
@@ -30,7 +30,7 @@ spec:
       tty: true
 """
 ) {
-  node(label) {
+  node(nodelabel) {
     stage("python-test") {
         container('python') {
           git "${env.REPO}"
@@ -39,3 +39,4 @@ spec:
         }
     }
   }
+}
